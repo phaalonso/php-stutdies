@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("h2").css("color","red");
+
+            // Pode ser assim
+            $("#bt1").click(function () {
+                texto = "<img src='image.jpeg'>";
+                $("#div2").append(texto);
+            });
+
+            $("#bt2").click(function() {remove()});
+        });
+
+       
+        function remove(){
+            $("img").remove();
+        };
+
+    </script>
+</head>
+
+<body>
+
+    <div id="div1">
+        <h2>Imagem</h2>
+        <br>
+        <div id="div2">
+        </div>
+    </div>
+
+    <button id="bt1">Ler imagem</button>
+    <button id="bt2">Apagar imagem</button>
+
+</body>
+
+</html>

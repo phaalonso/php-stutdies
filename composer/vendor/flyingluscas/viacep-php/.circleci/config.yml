@@ -1,0 +1,158 @@
+version: '2'
+
+jobs:
+  checkout:
+    docker:
+      - image: circleci/php
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - ./
+
+  psr2:
+    docker:
+      - image: circleci/php
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - vendor-v1-psr2-{{ checksum "composer.json" }}
+      - run:
+          name: Composer install
+          command: composer install --no-progress --no-interaction
+      - save_cache:
+          key: vendor-v1-psr2-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - composer.lock
+      - run:
+          name: Check PSR2 standards
+          command: composer check-style
+
+  php56:
+    docker:
+      - image: circleci/php:5.6
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - vendor-v1-php56-{{ checksum "composer.json" }}
+      - run:
+          name: Composer install
+          command: composer install --no-progress --no-interaction
+      - save_cache:
+          key: vendor-v1-php56-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - composer.lock
+      - run:
+          name: Composer test
+          command: composer test -- --coverage-text
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - ./
+
+  php70:
+    docker:
+      - image: circleci/php:7.0
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - vendor-v1-php70-{{ checksum "composer.json" }}
+      - run:
+          name: Composer install
+          command: composer install --no-progress --no-interaction
+      - save_cache:
+          key: vendor-v1-php70-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - composer.lock
+      - run:
+          name: Composer test
+          command: composer test
+
+  php71:
+    docker:
+      - image: circleci/php:7.1
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - vendor-v1-php71-{{ checksum "composer.json" }}
+      - run:
+          name: Composer install
+          command: composer install --no-progress --no-interaction
+      - save_cache:
+          key: vendor-v1-php71-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - composer.lock
+      - run:
+          name: Composer test
+          command: composer test
+
+  php72:
+    docker:
+      - image: circleci/php:7.2
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - vendor-v1-php72-{{ checksum "composer.json" }}
+      - run:
+          name: Composer install
+          command: composer install --no-progress --no-interaction
+      - save_cache:
+          key: vendor-v1-php72-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+            - composer.lock
+      - run:
+          name: Composer test
+          command: composer test
+
+  coverage:
+    docker:
+      - image: circleci/php
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Upload Code Coverage
+          command: |
+            curl -s https://codecov.io/bash > .codecov
+            chmod +x .codecov
+            ./.codecov
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - checkout
+      - psr2:
+          requires:
+            - checkout
+      - php56:
+          requires:
+            - checkout
+      - php70:
+          requires:
+            - checkout
+      - php71:
+          requires:
+            - checkout
+      - php72:
+          requires:
+            - checkout
+      - coverage:
+          requires:
+            - php56

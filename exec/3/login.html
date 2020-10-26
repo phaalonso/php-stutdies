@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="script.js"></script>
+	<title>Document</title>
+</head>
+<body>
+	<form action="src/control/process.php" method="POST" style="display: grid; width: 300px;">
+		<span>Nome</span>
+		<input id="nome" type="text" name="nome" />
+		<span>Senha</span>
+		<input id="senha" type="password" name="senha" /> 
+		
+		<span id="error" style="display: none; color: red;">A</span>
+
+		<button type="submit">Logar</button>
+		<button type="button" id="deslogar">Deslogar</button>
+	</form>	
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <form method>
+        <label>Numero 1: </label><br>
+        <input type="number"  id="n1" size="30">
+        <br>
+
+        <label>Numero 2: </label><br>
+        <input type="number" id="n2" size="100"><br>
+        <br> 
+        <button type="button" id="bt4" >Calcular</button>
+        <br><br>
+        <label>Resultado</label><br>
+        <input type="text" id="res" size="100"><br>
+    </form>
+    </form>
+
+    
+</body>
+<script>
+    $(document).ready(() => {  
+        $("#bt4").click(function(){
+            var str1 = $("#n1").val();
+            var str2 = $("#n2").val();
+          
+            $.post('resultado.php', { numero1 : str1,numero2 :str2}, function(retorno){ 
+                if(retorno != null){
+                     $("#res").val(retorno);
+                } else {
+                     $("res").val("0");
+                }
+            });
+        });                 
+    })
+
+</script>
+
+</html>
